@@ -1,6 +1,8 @@
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 
 class GamePanel extends JPanel implements Runnable {
 
@@ -15,6 +17,7 @@ class GamePanel extends JPanel implements Runnable {
 
     public static GameBack background;//задний фон
     public static Player player;//игрок
+    public static ArrayList<Bullet> bullets;
     //Конструктор
     public GamePanel() {
         super();
@@ -22,11 +25,10 @@ class GamePanel extends JPanel implements Runnable {
         setFocusable(true);
         requestFocus();
 
-
+        this.addKeyListener(new Listeners());
     }
 
     //Функции
-
     public void start(){
         thread = new Thread(this);
         thread.start();//запустили поток
@@ -41,11 +43,12 @@ class GamePanel extends JPanel implements Runnable {
 
         background = new GameBack();
         player = new Player();
+        bullets = new ArrayList<Bullet>();
 
         while (true) {
             gameUpdate();
             gameRender();
-            gameDrow();
+            gameDraw();
 
             try {
                 thread.sleep(33);
@@ -59,15 +62,25 @@ class GamePanel extends JPanel implements Runnable {
         background.update();
 
         player.update();
+        for (int i = 0; i < bullets.size(); i++) {
+            bullets.get(i).update();
+            if(bullets.get(i).remove()){
+                bullets.remove(i);
+                i--;
+            }
+        }
     }
 
     public void gameRender() {//обновление графики
         background.draw(g);
 
-        player.drow(g);
+        player.draw(g);
+        for (int i = 0; i < bullets.size(); i++) {
+            bullets.get(i).draw(g);
+        }
     }
 
-    private void gameDrow() {
+    private void gameDraw() {
         Graphics g2 = this.getGraphics();
         g2.drawImage(image, 0, 0, null);
         g2.dispose();//удаление обьекта который нарисовали
