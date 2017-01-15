@@ -34,7 +34,9 @@ public class Player {
         return y;
     }
 
-
+    public int getR() {
+        return r;
+    }
 
     public void update() {
         if (up && y > r) {
@@ -75,7 +77,7 @@ public class Player {
         g.setStroke(new BasicStroke(3));
         g.setColor(color1.darker());
         g.drawOval((int) (x - r), (int) (y - r), 2 * r, 2 * r);
-        //g.setStroke(new BasicStroke(2));
+        g.setStroke(new BasicStroke(1));
     }
 
 

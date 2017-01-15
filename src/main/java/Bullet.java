@@ -17,6 +17,18 @@ public class Bullet {
     }
 
     //функции
+    public double getX() {
+        return x;
+    }
+
+    public double getY() {
+        return y;
+    }
+
+    public int getR() {
+        return r;
+    }
+
     public void update() {
         y -= speed;
     }
